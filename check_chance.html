@@ -19,46 +19,54 @@
             <div>
                 <span class="item">Первый предмет</span>
                 <span>Шанс = <input type="text" name="chance_1" placeholder="100" value="100"></span>
-                <span>Крит = <input type="text" name="damage_1" placeholder="200" value="200"></span>
+                <span>Крит = <input type="text" name="crit_1" placeholder="200" value="200"></span>
+                <span>Сила = <input type="text" name="damage_1" placeholder="1300" value="1300"></span>
             </div>
 
             <div>
                 <span class="item">Второй предмет</span>
                 <span>Шанс = <input type="text" name="chance_2" placeholder="50" value="50"></span>
-                <span>Крит = <input type="text" name="damage_2" placeholder="500" value="500"></span>
+                <span>Крит = <input type="text" name="crit_2" placeholder="500" value="500"></span>
+                <span>Сила = <input type="text" name="damage_2" placeholder="1000" value="1000"></span>
             </div>
 
-            <input type="button" value="Сравнить" onClick="check(form.chance_1.value, form.damage_1.value, form.chance_2.value, form.damage_2.value)">
+            <input type="button" value="Сравнить" onClick="check(form.chance_1.value, form.crit_1.value, form.damage_1.value, form.chance_2.value, form.crit_2.value, form.damage_2.value)">
 
         </form>
 
         <div id="result">
             <span>Результат</span>
-            <span>Средний урон первого = <span id="item_1"></span></span>
-            <span>Средний урон второго = <span id="item_2"></span></span>
+            <span>Средний крит первого = <span id="item_1-1"></span>, а урон = <span id="item_1-2"></span></span>
+            <span>Средний крит второго = <span id="item_2-1"></span>, а урон = <span id="item_2-2"></span></span>
             <span>Ну, получается, что урон <span id="check_result"></span></span>
         </div>
     </div>
 
     <script>
 
-        function check(chance_1, damage_1, chance_2, damage_2) {
+        function check(chance_1, crit_1, damage_1, chance_2, crit_2, damage_2) {
 
             var totalDamage1 = 0;
             var totalDamage2 = 0;
 
             if (chance_1 >= 0 && chance_1 <= 100) {
-                totalDamage1 = (chance_1 * damage_1 + (100 - chance_1) * 100) / 100;
-                document.getElementById('item_1').innerHTML = totalDamage1 + "%";
+                totalDamage1 = (chance_1 * crit_1 + (100 - chance_1) * 100) / 100;
+                document.getElementById('item_1-1').innerHTML = totalDamage1 + "%";
+                totalDamage1 = totalDamage1 * damage_1 / 100;
+                document.getElementById('item_1-2').innerHTML = totalDamage1;
             } else {
-                document.getElementById('item_1').innerHTML = "Что-то не то с шансами, или вижу текст";
+                document.getElementById('item_1-1').innerHTML = "Что-то не то с шансами, или вижу текст";
+                document.getElementById('item_1-2').innerHTML = "";
             }
 
             if (chance_2 >= 0 && chance_2 <= 100) {
-                totalDamage2 = (chance_2 * damage_2 + (100 - chance_2) * 100) / 100;
-                document.getElementById('item_2').innerHTML = totalDamage2 + "%";
+                totalDamage2 = (chance_2 * crit_2 + (100 - chance_2) * 100) / 100;
+                document.getElementById('item_2-1').innerHTML = totalDamage2 + "%";
+                totalDamage2 = totalDamage2 * damage_2 / 100;
+                document.getElementById('item_2-2').innerHTML = totalDamage2;
             } else {
-                document.getElementById('item_2').innerHTML = "Что-то не то с шансами, или вижу текст";
+                document.getElementById('item_2-1').innerHTML = "Что-то не то с шансами, или вижу текст";
+                document.getElementById('item_2-2').innerHTML = "";
             }
 
             if (totalDamage1 > totalDamage2) {

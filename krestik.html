@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание правил</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+
+            background-color: rgb(25, 23, 49);
+            /* background-color: rgb(0, 0, 0); */
+            color:rgb(126, 126, 126);
+            font-size: 16pt;
+
+            align-items: center;
+
+        }
+
+        body>dl>dt {
+            display: none;
+        }
+
+        dt:hover {
+            cursor: pointer;
+        }
+
+        main {
+            display: flex;
+
+            flex-wrap: wrap;
+        }
+
+        .block {
+            display: flex;
+            flex-direction: column;
+
+            margin-bottom: 25px;
+
+        }
+
+        .item {
+            width: 200px;
+            min-height:100px;
+
+            margin: 5px;
+
+            border: 2px red solid;
+
+        }
+
+        .item:hover {
+            cursor: pointer;
+            border: 2px rgb(255, 140, 0) solid;
+
+            color:rgb(137, 137, 137);
+        }
+
+        .title {
+            text-align: center;
+
+            width: 200px;
+            margin: 5px;
+            border: 2px red solid;
+        }
+
+        .check {
+            color: rgb(180, 180, 180);
+
+            border: 2px green solid !important;
+            background:rgb(24, 60, 35);
+
+        }
+
+        .code {
+            display: inline-block;
+            width: 300px;
+            height: 50px;
+
+            text-align: center;
+            vertical-align: middle;
+            line-height: 250%;
+
+            margin: 30px 0;
+
+            border: 2px red solid;
+        }
+
+        button {
+            width: 250px;
+            height: 100px;
+
+            background-color: rgb(30, 30, 30);
+            border: 2px red solid;
+
+            font-size: 16pt;
+            color:rgb(126, 126, 126);
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            border: 3px rgb(255, 140, 0) solid;
+
+            color:rgb(137, 137, 137);
+
+        }
+
+        .result {
+            position: relative;
+        }
+
+        .gg-copy {
+            box-sizing: border-box;
+            position: absolute;
+            top: 45px;
+            right: -30px;
+
+            display: inline-block;
+            transform: scale(var(--ggs,2));
+            width: 14px;
+            height: 18px;
+            border: 2px solid;
+        }
+
+        .gg-copy::after,
+        .gg-copy::before {
+            content: "";
+            display: block;
+            box-sizing: border-box;
+            position: absolute
+        }
+
+        .gg-copy::before {
+            background:
+            linear-gradient( to left,
+            currentColor 5px, transparent 0)
+            no-repeat right top/5px 2px,
+            linear-gradient( to left,
+            currentColor 5px, transparent 0)
+            no-repeat left bottom/ 2px 5px;
+            box-shadow: inset -4px -4px 0 -2px;
+            bottom: -6px;
+            right: -6px;
+            width: 14px;
+            height: 18px
+        }
+
+        .gg-copy::after {
+            width: 6px;
+            height: 2px;
+            background: currentColor;
+            left: 2px;
+            top: 2px;
+            box-shadow: 0 4px 0,0 8px 0
+        } 
+
+        .gg-copy:hover {
+            cursor: pointer;
+
+            color: rgb(255, 140, 0);
+        }
+
+        .copy_result {
+            height: 50px;
+        }
+
+        .copy_ok {
+            color: green;
+        }
+
+        .copy_fail {
+            color: red;
+        }
+
+
+        @media screen and (max-width: 450px) {
+            body {
+            }
+
+        }
+
+        table {
+            background-color: rgb(47, 150, 111);
+
+            position: absolute;
+
+            top: 20%;
+        }
+        
+        
+
+        td {
+            text-align: center;            
+            
+
+            width: 200px;
+            height: 200px;
+
+            border:rgb(24, 60, 35), solid, 3px;
+            user-select: none;
+
+            font-size: 150px;
+            
+        }
+
+        td:hover {
+            /* background-color: rgb(146, 136, 30); */
+            /* background-color: rgb(47, 150, 111); */
+        }
+
+        
+
+        td:has(div.krestik):hover {
+            background-color: rgb(47, 150, 111);
+        }
+        td:has(div.nolik):hover {
+            background-color: rgb(47, 150, 111);
+        }
+
+       
+        
+        button {
+            margin-top: 30px;
+        }
+
+        .krestik {
+            color: rgb(154, 13, 0);
+        }
+
+        .nolik {
+            color: rgb(0, 0, 255);
+        }
+
+        td:not(.krestik):hover {
+            background-color: rgb(146, 136, 30);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td id="00" onclick="Place(0,0)"></td>
+            <td id="01" onclick="Place(0,1)"></td>
+            <td id="02" onclick="Place(0,2)"></td>
+        </tr>
+        <tr>
+            <td id="10" onclick="Place(1,0)"></td>
+            <td id="11" onclick="Place(1,1)"></td>
+            <td id="12" onclick="Place(1,2)"></td>
+        </tr>
+        <tr>
+            <td id="20" onclick="Place(2,0)"></td>
+            <td id="21" onclick="Place(2,1)"></td>
+            <td id="22" onclick="Place(2,2)"></td>
+        </tr>
+    </table>
+
+    <button onclick="Clear()">Очистить</button>
+
+    <!-- <main id="main">
+    </main>
+
+    <div class="result">
+        <span id="code" class="code">Код</span>
+        <i id="copy" class="gg-copy" onclick="Copy()"></i>
+    </div>
+    <div id="copy_result" class="copy_result"></div>
+    <button onclick="Encode()">Получить правила</button> -->
+
+    <script>
+
+        var hod = true; // ход крестика
+
+        
+
+        var table = [];
+
+        for (let i = 0; i < 3; i++) {
+            table.push([]);
+            for (let j = 0; j < 3; j++) {
+                table[i].push(0);
+            }
+        }
+
+        console.log(table);
+
+        function Place(x, y) {
+
+            if (table[y][x] == 0) {
+                let block = document.createElement("div");
+
+                if (hod) {
+                    block.classList.add("krestik");
+                    block.innerText = "X";
+                } else {
+                    block.classList.add("nolik");
+                    block.innerText = "O";
+                }
+
+                hod = !hod;
+
+                let td = document.getElementById(`${x}${y}`);
+
+                table[y][x] = hod ? 1 : 2;
+
+                td.appendChild(block);
+            }
+        }
+
+        function Clear() {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    table[i][j] = 0;
+                    // let td = document.getElementById(`${i}${j}`);
+                    // if (td.childNodes.length == 0) {
+                    //     console.log(td.hasChildNodes);
+                    //     let block = td.childNodes;
+                    //     console.log(block);
+                    //     td.removeChild(block);
+                    // }
+                    
+                }
+            }
+
+            
+        }
+
+
+        class Game {
+
+            constructor() {
+
+                this.settings = new Map();
+
+                this.propertysGeneral = [
+                    "order",
+                    "monolog",
+                    "golosovanie",
+                    "win",
+                    "foul",
+                    "mafia_choose",
+                    "termin"
+
+                ];
+
+                this.propertysGeneralNames = [
+                    "Порядок Игры",
+                    "Монологи",
+                    "После Монологов",
+                    "Условия победы",
+                    "Фолы",
+                    "Выбор жертвы Мафии",
+                    "Некоторые термины"
+
+                ];
+
+                this.propertysCards = [
+                    "type",
+                    "mafia_simple",
+                    "boss",
+                    "isheika",
+                    "advokat",
+
+                    "maniak",
+                    "otravitel",
+                    "revolutsioner",
+                    "poklonnica",
+
+                    "patrulniy",
+                    "detective",
+                    "sichick",
+                    "sudia",
+                    "jurnalist",
+                    "doctor",
+
+                    "vezunchik",
+                    "mstitel",
+
+                    "mirniy"
+
+                ];
+                
+                this.propertysCardsNames = [
+                    "Тип игры",
+                    "Мафия",
+                    "Босс",
+                    "Ищейка",
+                    "Адвокат",
+
+                    "Маньяк",
+                    "Отравитель",
+                    "Революционер",
+                    "Поклонница",
+
+                    "Патрульный",
+                    "Детектив",
+                    "Сыщик",
+                    "Судья",
+                    "Журналист",
+                    "Доктор",
+
+                    "Везунчик",
+                    "Мститель",
+
+                    "Мирный"
+
+                ];
+
+                // set base card rules
+                this.baseCards = new Map();
+
+                this.propertysCards.forEach(el => {
+                    this.baseCards.set(el, []);
+                });
+                //console.log(this.baseCards);
+                this.SetBaseCards();
+            }
+
+            IsException(prop) {
+                if (prop == this.propertysCards[0] ||
+                    prop == this.propertysCards[1] ||
+                    prop == this.propertysCards[8] ||
+                    prop == this.propertysCards[17])
+                    return true;
+                else 
+                    return false;
+            }
+
+            AddToggleEvent(prop, num) {
+                let title = document.getElementById(prop + "_title");
+                let rule = document.getElementById(prop + `_${num}`);
+                
+                rule.addEventListener("click", () => {
+                        if (rule.getAttribute("check") == "false") {
+                            rule.classList.add("check");
+                            rule.setAttribute("check", "true");
+                            if (num != 0 && !this.IsException(prop)) {
+                                let rule_0 = document.getElementById(prop + '_0');
+                                rule_0.classList.add("check");
+                                rule_0.setAttribute("check", true);
+                            }
+                        } else {
+                            rule.classList.remove("check");
+                            rule.setAttribute("check", "false");
+                        }
+
+                        let card = document.getElementById(prop);
+
+                        let is_check = false;
+
+                        for (let j = 0; j < card.children.length - 1; ++j) {
+                            let rule = document.getElementById(prop + `_${j}`);
+                            
+                            if (rule.getAttribute("check") == "true") {
+                                is_check = true;
+                            }
+                        }
+                        console.log(is_check);
+                        if (is_check) {
+                            title.classList.add("check");
+                        } else {
+                            title.classList.remove("check");
+                        }
+
+                        let code = document.getElementById("code");
+
+                        code.classList.remove("check");
+                    });
+
+                
+            }
+
+            ShowBase() {
+                console.log(this.baseCards);
+
+                let main = document.getElementById("main");
+
+                for (let i = 0; i < this.propertysCards.length; i++) {
+                    const prop = this.propertysCards[i];
+                    
+                    let card = this.baseCards.get(prop);
+
+                    let block = document.createElement("div");
+
+                    block.id = prop;
+                    block.classList.add("block");
+
+                    let title = document.createElement("div");
+                    title.id = prop + "_title";
+                    title.classList.add("title");
+                    title.innerHTML = this.propertysCardsNames[i];
+
+                    block.appendChild(title);
+
+                    for (let j = 0; j < card.length; ++j) {
+                        const rule = card[j];
+                        
+                        let item = document.createElement("div");
+                        item.id = prop + `_${j}`;
+                        item.classList.add("item");
+                        item.setAttribute("check", "false");
+
+                        item.innerHTML = rule;
+
+                        block.appendChild(item);
+                    }
+
+                    main.appendChild(block);
+
+                }
+
+                this.AddEvents();
+
+            }
+
+            AddEvents() {
+                for (let i = 0; i < this.propertysCards.length; i++) {
+                    const prop = this.propertysCards[i];
+                    
+                    let el = document.getElementById(prop);
+
+                    let card = this.baseCards.get(prop);
+
+                    // console.log(el.children.length);
+
+                    for (let j = 0; j < el.children.length - 1; ++j) {
+                        let rule = document.getElementById(prop + `_${j}`);
+                        this.AddToggleEvent(prop, j);
+
+                        // console.log(rule);
+                        
+                    }
+                }
+            }
+
+            TakeRule() {
+                let code = [];
+                let count = 0;
+                let last = "";
+
+                for (let i = 0; i < this.propertysCards.length; i++) {
+
+                    const prop = this.propertysCards[i];
+                    
+                    let card = this.baseCards.get(prop);
+
+                    let mul = 1;
+                    let res = 0;
+
+                    for (let j = 0; j < card.length; ++j) {
+                        const rule = card[i];
+                        
+                        let item = document.getElementById(prop + `_${j}`);
+                        if (item.getAttribute("check") == "true") {
+                            res += mul;
+                        }
+                        mul *= 2;
+
+                    }
+                    console.log(prop + " " + res);
+
+                    if (res < 26) {
+                        res = String.fromCharCode(97 + res);
+                    } else {
+                        res = String.fromCharCode(65 + res - 26);
+                    }
+
+                    if (last == "") {
+                        last = res;
+                        count++;
+                    } else if (last == res) {
+                        count++;
+                    } else {
+                        if (count > 1) {
+                            code.push(count, last);
+                        } else {
+                            code.push(last);
+                        }
+
+                        count = 1;
+                        last = res;
+                    }
+
+                    if (i == this.propertysCards.length - 1) {
+                        if (count > 1) {
+                            code.push(count, res);
+                        } else {
+                            code.push(res);
+                        }
+                    }
+                    console.log(code);
+
+                }
+
+                return code.join('');
+            }
+
+
+
+            
+            SetBaseCards() {
+                let temp_rule;
+
+                this.PushToBase(this.baseCards, "type", "Закрытая - Дневное повешение не вскрывает карту игрока. После любой смерти есть предсмертная речь.");
+                this.PushToBase(this.baseCards, "type", "Открытая - Дневное повешение вскрывает карту игрока. Ночные убийства не вскрывают карту игрока (бывают исключения у некоторых карт).");
+
+                temp_rule = " Мафия(-ии/ий) без дополнительных способностей"
+                for (let i = 1; i <= 5; ++i) {
+                    this.PushToBase(this.baseCards, "mafia_simple", `${i}` + temp_rule);
+                }
+
+                this.PushToBase(this.baseCards, "boss", "Мафия.");
+                this.PushToBase(this.baseCards, "boss", "Проверяется мирным.");
+                this.PushToBase(this.baseCards, "boss", 'Ищет Везунчика. Если находит, ведущий покажет палец вверх, а везунчик умрёт. Иначе покажет знак "Крест". Если Мафия стреляет в везунчика, то Босс умирает.');
+
+                this.PushToBase(this.baseCards, "isheika", "Мафия.");
+                this.PushToBase(this.baseCards, "isheika", 'Ищет Детектива. Если нашли, ведущий покажет знак детектива. Иначе покажет знак "Крест".');
+                this.PushToBase(this.baseCards, "isheika", 'Ищет Патрульного. Если нашли, ведущий покажет знак Патрульного. Иначе покажет знак "Крест".');
+                this.PushToBase(this.baseCards, "isheika", 'Ищет Судью. Если нашли, ведущий покажет знак Судьи. Иначе покажет знак "Крест".');
+
+                this.PushToBase(this.baseCards, "advokat", "Мафия.");
+                this.PushToBase(this.baseCards, "advokat", "Защищает от повешения.");
+                this.PushToBase(this.baseCards, "advokat", "Меняет результат дневного приговора.");
+                this.PushToBase(this.baseCards, "advokat", "Ищет Судью. Если находит, то блокирует его способность. Ни Судья, ни Адвокат не знают о блокировке.");
+
+                this.PushToBase(this.baseCards, "maniak", "Одиночка.");
+                this.PushToBase(this.baseCards, "maniak", "Убивает.");
+                this.PushToBase(this.baseCards, "maniak", "Проверяется мирным для детективка.");
+                this.PushToBase(this.baseCards, "maniak", "Детектив умирает от проверки.");
+
+                this.PushToBase(this.baseCards, "otravitel", "Одиночка.");
+                this.PushToBase(this.baseCards, "otravitel", "Убивает.");
+                this.PushToBase(this.baseCards, "otravitel", "Игнорирует лечение.");
+                this.PushToBase(this.baseCards, "otravitel", "Убийство  озвучивается перед следующей ночью.");
+                this.PushToBase(this.baseCards, "otravitel", "Убийство  озвучивается перед повешением.");
+                
+                this.PushToBase(this.baseCards, "revolutsioner", "Одиночка.");
+                this.PushToBase(this.baseCards, "revolutsioner", "Убивает.");
+                this.PushToBase(this.baseCards, "revolutsioner", "Убийство отключает способность Мстителя.");
+                this.PushToBase(this.baseCards, "revolutsioner", "Игнорирует способность Везунчика.");
+                this.PushToBase(this.baseCards, "revolutsioner", "Выстрел в Везунчика считается за 2 выстрела.");
+
+                this.PushToBase(this.baseCards, "poklonnica", "Выбирает любимчика на всю игру в ночь знакомств.");
+                this.PushToBase(this.baseCards, "poklonnica", "Если любимчик жив, играет за город. Если мёртв, то становится одиночкой и убивает каждую ночь.");
+                this.PushToBase(this.baseCards, "poklonnica", "Играет за команду любимчика. Если любимчика должны убить ночью, то спасает его, жертвуя собой. Если любимчика повесили, то самоубивается следующей ночью.");
+                this.PushToBase(this.baseCards, "poklonnica", "Любимчик это Маньяк. Друг друга не знают, но играют в одной команде. Если Маньяк умрёт, то начинает убивать.");
+                this.PushToBase(this.baseCards, "poklonnica", "Пока любимчик жив, проверяется мирным. Если мёртв - то проверяется собой.");
+
+                this.PushToBase(this.baseCards, "patrulniy", "Мирный.");
+                this.PushToBase(this.baseCards, "patrulniy", "Убивает.");
+                this.PushToBase(this.baseCards, "patrulniy", "Убийство расскроет роль жертвы утром.");
+                this.PushToBase(this.baseCards, "patrulniy", "Знает Детектива.");
+
+                this.PushToBase(this.baseCards, "detective", "Мирный.");
+                this.PushToBase(this.baseCards, "detective", "Проверяет цвет. Ночью ведущий покажет большим пальцем вниз, если игрок против мирных, и пальцем вверх, если игрок за мирных.");
+                this.PushToBase(this.baseCards, "detective", "Проверяет роль. Проверка озвучивается ведущим после объявления всех ночных убийств.");
+                this.PushToBase(this.baseCards, "detective", "Знает Патрульного.");
+
+                this.PushToBase(this.baseCards, "sichick", "Мирный.");
+                this.PushToBase(this.baseCards, "sichick", "Перенимает способности Патрульного и/или Детектива после их смерти.");
+
+                this.PushToBase(this.baseCards, "sudia", "Мирный.");
+                this.PushToBase(this.baseCards, "sudia", "Садит в тюрьму мафию. Посаженный в тюрьму считается мёртвым. Нельзя спасти игрока лечением.");
+
+                this.PushToBase(this.baseCards, "jurnalist", "Мирный.");
+                this.PushToBase(this.baseCards, "jurnalist", "Исследует игрока. Если любой из исследуемых ранее игроков умер, пока жив Журналист, то роль вскрывается в любом случае.");
+                this.PushToBase(this.baseCards, "jurnalist", "Проверяет двоих. Если оба одновременно красные или одновременно чёрные и/или серые, то ведущий покажет палец вверх. Если один красные, а другой чёрный/серый, то покажут палец вниз.");
+                this.PushToBase(this.baseCards, "jurnalist", "При проверки универсального и любого другого ведущий покажет палец вверх.");
+                
+                this.PushToBase(this.baseCards, "doctor", "Мирный.");
+                this.PushToBase(this.baseCards, "doctor", "Лечит любого игрока (даже самого себя) от убийства. Нельзя лечить одного и того же игрока две ночи ПОДРЯД (через ночь можно).");
+
+                this.PushToBase(this.baseCards, "vezunchik", "Мирный.");
+                this.PushToBase(this.baseCards, "vezunchik", "Не может умереть.");
+                this.PushToBase(this.baseCards, "vezunchik", "Умирает только от одиночек.");
+                this.PushToBase(this.baseCards, "vezunchik", "Имеет две жизни.");
+                this.PushToBase(this.baseCards, "vezunchik", "Умирает с трёх выстрелов (может быть в одну ночь).");
+
+                this.PushToBase(this.baseCards, "mstitel", "Мирный");
+                this.PushToBase(this.baseCards, "mstitel", "Если умрёт, убивает любого игрока независимо от его способностей");
+
+                temp_rule = " Мирный(-ых/ий) без дополнительных способностей"
+                for (let i = 1; i <= 5; ++i) {
+                    this.PushToBase(this.baseCards, "mirniy", `${i}` + temp_rule);
+                
+                }
+
+                console.log(this.baseCards);
+                
+            }
+
+            PushToBase(base, key, value) {
+                let res = base.get(key);
+                res.push(value);
+                base.set(key, res);
+            }       
+
+            settings;
+            
+            propertysCards;
+            propertysGeneral;
+
+            propertysCardsNames;
+            propertysGeneralNames;            
+            
+            baseCards;
+
+            code;
+            
+        }
+
+        var game = new Game();
+
+        game.ShowBase();
+
+        function Encode() {
+            code = document.getElementById("code");
+            // code = parseInt(code, 10);
+            code.innerHTML = game.TakeRule();
+            code.classList.add("check");
+
+            document.getElementById("copy_result").innerHTML = "";
+
+        }
+
+        function Copy() {
+            let code = document.getElementById("code");
+            let result = document.getElementById("copy_result");
+            if (code.classList.contains("check")) {
+                navigator.clipboard.writeText(code.innerHTML)
+                .then(() => {
+                
+                result.classList.remove("copy_fail");
+                result.classList.add("copy_ok");
+                result.innerHTML = "Скопировали";
+                })
+                .catch(err => {
+                    console.log('Something went wrong', err);
+                })
+            } else {
+                result.classList.remove("copy_ok");
+                result.classList.add("copy_fail");
+                result.innerHTML = "Правила изменены";
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
